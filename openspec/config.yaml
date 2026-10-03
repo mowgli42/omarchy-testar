@@ -1,0 +1,17 @@
+schema: spec-driven
+
+context: |
+  omarchy-testar: scriptless GUI explorer for Omarchy (Hyprland / Quickshell).
+  Read openspec/project.md, docs/standards.md, and AGENTS.md before implementing.
+  Spec → beads → implement → simulator or pytest (see openspec/WORKFLOW.md).
+  Validated behavior is the fixture simulator only. Live seat driving is aspirational.
+
+rules:
+  proposal:
+    - State non-goals
+    - Name the report formats touched (CTRF, JUnit XML, SARIF)
+  tasks:
+    - Mark simulator tasks separate from live Hyprland tasks
+  specs:
+    - Tag scenarios Validated or Future
+    - SHALL requirements only for behavior the change actually adds

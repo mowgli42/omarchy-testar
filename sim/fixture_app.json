@@ -1,0 +1,17 @@
+{
+  "initial": "main",
+  "states": {
+    "main": {
+      "widgets": [
+        {"role": "button", "name": "Open", "action": "click", "next": "editor"},
+        {"role": "button", "name": "Quit", "action": "click", "next": "closed", "fatal": true}
+      ]
+    },
+    "editor": {
+      "widgets": [
+        {"role": "text", "name": "Body", "action": "type", "next": "editor"},
+        {"role": "button", "name": "Back", "action": "click", "next": "main"}
+      ]
+    }
+  }
+}
