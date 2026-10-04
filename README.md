@@ -25,10 +25,11 @@ sim/               fixture app + explore.py (validated slice)
 ## Demo
 
 ```bash
-python3 sim/explore.py
+python3 sim/explore.py          # generic fixture walk
+python3 sim/plugin_ui.py        # Omarchy plugin manifest + panel controls
 ```
 
-Writes `sim/out/ctrf.json`, `sim/out/junit.xml`, and `sim/out/findings.sarif`. See [DEMO.md](DEMO.md).
+Plugin under test: `examples/status-panel` (bar widget summons a panel). Live `omarchy-shell` summon is not run here.
 
 ## Workflow
 

@@ -1,18 +1,17 @@
 # Demo
 
-Fixture only. No Hyprland required.
+Fixture app, no Hyprland:
 
 ```bash
 python3 sim/explore.py
 ```
 
-Expect:
+Plugin UI (example status panel):
 
-- `sim/out/sequence.jsonl` — 3 actions, including a click on Open
-- `sim/out/ctrf.json` — one failed test (fatal action)
-- `sim/out/junit.xml` — one failure, same name
-- `sim/out/findings.sarif` — one crash result
+```bash
+python3 sim/plugin_ui.py
+```
 
-The fatal action is deliberate. A green run would not exercise the oracle scenario.
+Expect `sim/out/plugin-sequence.jsonl` with summon, Refresh, Close, and `sim/out/plugin-walk.html`.
 
-Future live-seat scenario is tagged `@future` and is not part of this demo.
+On a real Omarchy session the same plugin is `omarchy plugin add` of this repo, then `omarchy-shell summon example.status-panel`. That path is tagged `@future`.

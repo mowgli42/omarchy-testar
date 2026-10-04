@@ -3,6 +3,7 @@
 Not implemented. Prefix `omarchy-testar` when `bd init` is run.
 
 1. **Nested seat.** Run the SUT in a nested Hyprland or a systemd seat so ydotool cannot click the host. Reverse the simulator-only choice.
+1b. **Live plugin summon.** `omarchy plugin add` the status panel, `omarchy-shell summon example.status-panel`, read AT-SPI names Status / Refresh / Close.
 2. **AT-SPI connector.** dogtail or pyatspi against GTK apps. Map roles as in `docs/standards.md`.
 3. **Input actuator.** ydotool or EIS, scoped to the nested seat. Do not call xdotool.
 4. **Window oracle.** hyprctl: process exit, window unmapped, journalctl error.
