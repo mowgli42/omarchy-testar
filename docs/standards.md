@@ -23,7 +23,7 @@ Picked for adoption, not for elegance. A private sequence log will not get into 
 
 ## Widget vocabulary
 
-Not a separate standard. Map state-source nodes onto a small set of WAI-ARIA / AT-SPI roles (`button`, `text`, `dialog`, `menu item`, `link`). Playwright snapshots and dogtail then feed one selector.
+Not a separate standard. Map state-source nodes onto a small set of WAI-ARIA / AT-SPI roles (`button`, `text`, `dialog`, `menu item`, `link`). `sim/atspi.py` performs that map for fixture trees and optional live pyatspi. Playwright snapshots (deferred) and dogtail then feed one selector.
 
 ## Internal only
 

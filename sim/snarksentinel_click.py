@@ -22,12 +22,14 @@ from pathlib import Path
 
 SIM = Path(__file__).resolve().parent
 sys.path.insert(0, str(SIM))
+from policy import mark_visited, pick_unvisited as policy_pick  # noqa: E402
 from reports import assert_attachments_resolve, attachments_for  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 FIX = SIM / "fixtures" / "snarksentinel"
 OUT = SIM / "out" / "snarksentinel"
 RUN = "snarksentinel-click-all"
+BUTTON = {"button"}
 CRASH_RE = re.compile(r"segfault|sigsegv|aborted|core dumped|traceback", re.I)
 BUTTON_BLOCK = re.compile(
     r"\bButton\s*\{([^{}]*(?:\{[^{}]*\}[^{}]*)*)\}",
@@ -63,13 +65,6 @@ def reachable_button_names(app: dict) -> set[str]:
             if nxt and nxt not in seen_states:
                 queue.append(nxt)
     return names
-
-
-def pick_unvisited(buttons: list[dict], visited: set[str]) -> dict | None:
-    for b in buttons:
-        if b["name"] not in visited:
-            return b
-    return None
 
 
 def write_screenshot(step: int, state: str, name: str) -> str:
@@ -148,12 +143,12 @@ def click_all(app: dict, watched: Path, inject_crash: bool) -> list[dict]:
 
     while True:
         buttons = enabled_buttons(app, state)
-        choice = pick_unvisited(buttons, visited)
+        choice = policy_pick(buttons, visited, roles=BUTTON)
         if choice is None:
             # Local dead-end: jump to any reachable state that still has unvisited buttons.
             progressed = False
-            for sid, sdef in app["states"].items():
-                leftover = pick_unvisited(enabled_buttons(app, sid), visited)
+            for sid, _sdef in app["states"].items():
+                leftover = policy_pick(enabled_buttons(app, sid), visited, roles=BUTTON)
                 if leftover is not None:
                     state = sid
                     progressed = True
@@ -162,7 +157,7 @@ def click_all(app: dict, watched: Path, inject_crash: bool) -> list[dict]:
                 break
             continue
 
-        visited.add(choice["name"])
+        mark_visited(visited, choice)
         maybe_inject(watched, choice, inject_crash)
         crashed, evidence, log_offset = crash_in_log(watched, log_offset)
         seq = len(steps) + 1
@@ -184,7 +179,7 @@ def click_all(app: dict, watched: Path, inject_crash: bool) -> list[dict]:
         state = choice["next"]
         if visited >= target:
             # Still finish if current state has nothing new; loop condition handles it.
-            if pick_unvisited(enabled_buttons(app, state), visited) is None:
+            if policy_pick(enabled_buttons(app, state), visited, roles=BUTTON) is None:
                 # Check remaining states once more next iteration.
                 pass
     return steps

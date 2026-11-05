@@ -1,7 +1,7 @@
 {
   "id": "io.github.mowgli42.snarksentinel",
   "source": "snarksentinel/omarchy-plugin/{BarWidget,Panel}.qml",
-  "note": "Frozen button graph for click-all. role is always button. Transitions mirror Panel.qml visibility, not a recorded script.",
+  "note": "Frozen button graph aligned with simplified Panel (Posture/Apps/Scan). role is always button.",
   "initial": "bar",
   "states": {
     "bar": {
@@ -12,38 +12,19 @@
     "posture": {
       "widgets": [
         {"role": "button", "name": "Posture", "action": "click", "next": "posture"},
-        {"role": "button", "name": "Activity", "action": "click", "next": "activity"},
         {"role": "button", "name": "Apps", "action": "click", "next": "apps"},
-        {"role": "button", "name": "Run scans", "action": "click", "next": "scan_dialog"},
+        {"role": "button", "name": "Scan", "action": "click", "next": "scan_dialog"},
         {"role": "button", "name": "Install", "action": "click", "next": "posture"},
         {"role": "button", "name": "Run scan", "action": "click", "next": "posture"},
         {"role": "button", "name": "Review results", "action": "click", "next": "review_dialog"},
         {"role": "button", "name": "Fix prompt", "action": "click", "next": "fix_dialog"}
       ]
     },
-    "activity": {
-      "widgets": [
-        {"role": "button", "name": "Posture", "action": "click", "next": "posture"},
-        {"role": "button", "name": "Activity", "action": "click", "next": "activity"},
-        {"role": "button", "name": "Apps", "action": "click", "next": "apps"},
-        {"role": "button", "name": "Run scans", "action": "click", "next": "scan_dialog"},
-        {"role": "button", "name": "Active only", "action": "click", "next": "activity"},
-        {"role": "button", "name": "All exposed", "action": "click", "next": "activity"},
-        {"role": "button", "name": "1h", "action": "click", "next": "activity"},
-        {"role": "button", "name": "6h", "action": "click", "next": "activity"},
-        {"role": "button", "name": "Day", "action": "click", "next": "activity"},
-        {"role": "button", "name": "Week", "action": "click", "next": "activity"},
-        {"role": "button", "name": "Info", "action": "click", "next": "info_dialog"},
-        {"role": "button", "name": "Block", "action": "click", "next": "filter_dialog"},
-        {"role": "button", "name": "Allow", "action": "click", "next": "filter_dialog"}
-      ]
-    },
     "apps": {
       "widgets": [
         {"role": "button", "name": "Posture", "action": "click", "next": "posture"},
-        {"role": "button", "name": "Activity", "action": "click", "next": "activity"},
         {"role": "button", "name": "Apps", "action": "click", "next": "apps"},
-        {"role": "button", "name": "Run scans", "action": "click", "next": "scan_dialog"},
+        {"role": "button", "name": "Scan", "action": "click", "next": "scan_dialog"},
         {"role": "button", "name": "Refresh list", "action": "click", "next": "apps"},
         {"role": "button", "name": "Set net on", "action": "click", "next": "apps"},
         {"role": "button", "name": "Set net off", "action": "click", "next": "apps"},
@@ -53,13 +34,13 @@
     },
     "scan_dialog": {
       "widgets": [
-        {"role": "button", "name": "Run scan", "action": "click", "next": "posture"},
+        {"role": "button", "name": "Scan", "action": "click", "next": "posture"},
         {"role": "button", "name": "Close", "action": "click", "next": "posture"}
       ]
     },
     "review_dialog": {
       "widgets": [
-        {"role": "button", "name": "Accept these results", "action": "click", "next": "posture"},
+        {"role": "button", "name": "Accept these results", "action": "click", "next": "posture", "inject_crash": true},
         {"role": "button", "name": "Fix prompt", "action": "click", "next": "fix_dialog"},
         {"role": "button", "name": "Close", "action": "click", "next": "posture"}
       ]
@@ -68,24 +49,6 @@
       "widgets": [
         {"role": "button", "name": "Copy", "action": "click", "next": "fix_dialog"},
         {"role": "button", "name": "Close", "action": "click", "next": "posture"}
-      ]
-    },
-    "info_dialog": {
-      "widgets": [
-        {"role": "button", "name": "Copy forensic prompt", "action": "click", "next": "info_dialog"},
-        {"role": "button", "name": "Close", "action": "click", "next": "activity"}
-      ]
-    },
-    "filter_dialog": {
-      "widgets": [
-        {"role": "button", "name": "IP", "action": "click", "next": "filter_dialog"},
-        {"role": "button", "name": "Network", "action": "click", "next": "filter_dialog"},
-        {"role": "button", "name": "Connected hosts", "action": "click", "next": "filter_dialog"},
-        {"role": "button", "name": "Block all except", "action": "click", "next": "filter_dialog"},
-        {"role": "button", "name": "Accept", "action": "click", "next": "filter_dialog"},
-        {"role": "button", "name": "Accepted", "action": "click", "next": "filter_dialog"},
-        {"role": "button", "name": "Apply", "action": "click", "next": "activity", "inject_crash": true},
-        {"role": "button", "name": "Close", "action": "click", "next": "activity"}
       ]
     }
   }

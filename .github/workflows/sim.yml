@@ -12,6 +12,10 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - name: Nested seat config smoke
+        run: ./scripts/nested-seat.sh smoke --config-only
+      - name: AT-SPI fixture scrape
+        run: python3 sim/atspi.py --fixture sim/fixtures/atspi_tree.json
       - name: Fixture explore
         run: python3 sim/explore.py
       - name: Plugin UI

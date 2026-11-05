@@ -2,7 +2,7 @@
 
 Scriptless GUI explorer for apps on [Omarchy](https://omarchy.org) (Arch + Hyprland + Quickshell). Same loop as [TESTAR](https://github.com/TESTARtool/TESTAR_dev): scrape state, derive actions, pick one, execute, oracle. No recorded scripts for the explorer. Scripted checks stay in Gherkin.
 
-This repo is the OpenSpec plan plus a fixture-driven simulator. It does not drive a live Hyprland seat yet.
+This repo is the OpenSpec plan plus a fixture-driven simulator. Nested-seat scripts and an AT-SPI scrape module are in place; live ydotool runs are still Future.
 
 ## Why not port TESTAR
 
@@ -31,7 +31,11 @@ python3 sim/snarksentinel_click.py  # click-all SnarkSentinel buttons + crash-lo
 python3 sim/snarksentinel_click.py --inject-crash
 python3 sim/snarksentinel_click.py --scrape ../snarksentinel/omarchy-plugin
 python3 sim/replay.py --sequence sim/out/sequence.jsonl --app sim/fixture_app.json
+python3 sim/atspi.py                              # fixture AT-SPI → button actions
+./scripts/nested-seat.sh smoke --config-only       # nested Hyprland config check
 ```
+
+**Do not** point `ydotool` at the host seat. See [docs/nested-seat.md](docs/nested-seat.md).
 
 Plugin under test: `examples/status-panel` (bar widget summons a panel). SnarkSentinel click-all uses `sim/fixtures/snarksentinel/` (frozen from `Panel.qml` / `BarWidget.qml`). Live `omarchy-shell` summon is not run here.
 

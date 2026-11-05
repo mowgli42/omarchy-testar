@@ -21,11 +21,11 @@ Reseed plan (documentation only): `.beads/production-rebuild.graph.json`
 
 | ID | Title | Blocked by |
 |----|-------|------------|
-| `omarchy-testar-c23` | Nested seat for safe GUI exploration | — ready |
-| `omarchy-testar-9xv` | AT-SPI connector for widget scrape | — ready |
+| `omarchy-testar-c23` | Nested seat for safe GUI exploration | closed (scripts + smoke) |
+| `omarchy-testar-9xv` | AT-SPI connector for widget scrape | closed (fixture + optional pyatspi) |
 | `omarchy-testar-3sa` | Input actuator (ydotool / EIS) | nested seat |
 | `omarchy-testar-1h5` | Live plugin summon (example.status-panel) | seat + AT-SPI + actuator |
-| `omarchy-testar-6oo` | Accessible.name on SnarkSentinel Panel buttons | — ready (snarksentinel repo) |
+| `omarchy-testar-6oo` | Accessible.name on SnarkSentinel Panel buttons | closed (snarksentinel PR) |
 | `omarchy-testar-g77` | Live SnarkSentinel click-all | plugin summon + a11y QML |
 | `omarchy-testar-9ze` | Window / journal crash oracle | nested seat |
 | `omarchy-testar-pgx` | Screenshot fallback state source | AT-SPI |
@@ -37,7 +37,7 @@ Reseed plan (documentation only): `.beads/production-rebuild.graph.json`
 | `omarchy-testar-4bf` | CTRF attachments for screenshots and sequence.jsonl | closed |
 | `omarchy-testar-gmw` | Replay failing sequence from sequence.jsonl | closed |
 | `omarchy-testar-9mr` | GitHub Actions: JUnit + SARIF upload | closed |
-| `omarchy-testar-enu` | Coverage-biased action policy | open |
-| `omarchy-testar-y2z` | Playwright state source for Chromium apps | open |
+| `omarchy-testar-enu` | Coverage-biased action policy | closed (`sim/policy.py`) |
+| `omarchy-testar-y2z` | Playwright state source for Chromium apps | deferred |
 | `omarchy-testar-8pb` | Cucumber Messages when Gherkin executes | open |
 | `omarchy-testar-5z7` | Open Test Reporting export (deferred; after Cucumber Messages) | open |
