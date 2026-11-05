@@ -1,0 +1,57 @@
+name: sim
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  explore:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Fixture explore
+        run: python3 sim/explore.py
+      - name: Plugin UI
+        run: python3 sim/plugin_ui.py
+      - name: SnarkSentinel click-all (clean)
+        run: python3 sim/snarksentinel_click.py
+      - name: Replay fixture sequence
+        run: |
+          python3 sim/replay.py --sequence sim/out/sequence.jsonl --app sim/fixture_app.json
+          python3 sim/replay.py --sequence sim/out/snarksentinel/sequence.jsonl --app sim/fixtures/snarksentinel/app.json
+      - name: SnarkSentinel crash oracle
+        run: |
+          if python3 sim/snarksentinel_click.py --inject-crash; then
+            echo "expected non-zero exit on crash injection" >&2
+            exit 1
+          fi
+      - name: Upload JUnit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: junit
+          path: |
+            sim/out/junit.xml
+            sim/out/plugin-junit.xml
+            sim/out/snarksentinel/junit.xml
+      - name: Upload SARIF
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sarif
+          path: |
+            sim/out/findings.sarif
+            sim/out/plugin-findings.sarif
+            sim/out/snarksentinel/findings.sarif
+      - name: Upload CTRF + sequences
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ctrf
+          path: |
+            sim/out/**/ctrf.json
+            sim/out/**/sequence.jsonl
+            sim/out/**/screenshots/**

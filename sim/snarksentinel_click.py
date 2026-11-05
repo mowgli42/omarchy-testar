@@ -16,12 +16,17 @@ import argparse
 import json
 import re
 import shutil
+import sys
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
+SIM = Path(__file__).resolve().parent
+sys.path.insert(0, str(SIM))
+from reports import assert_attachments_resolve, attachments_for  # noqa: E402
+
 ROOT = Path(__file__).resolve().parents[1]
-FIX = Path(__file__).resolve().parent / "fixtures" / "snarksentinel"
-OUT = Path(__file__).resolve().parent / "out" / "snarksentinel"
+FIX = SIM / "fixtures" / "snarksentinel"
+OUT = SIM / "out" / "snarksentinel"
 RUN = "snarksentinel-click-all"
 CRASH_RE = re.compile(r"segfault|sigsegv|aborted|core dumped|traceback", re.I)
 BUTTON_BLOCK = re.compile(
@@ -188,7 +193,7 @@ def click_all(app: dict, watched: Path, inject_crash: bool) -> list[dict]:
 def write_reports(steps: list[dict], failed: bool, message: str) -> dict:
     OUT.mkdir(parents=True, exist_ok=True)
     (OUT / "sequence.jsonl").write_text("".join(json.dumps(s) + "\n" for s in steps))
-    attachments = [{"name": s["screenshot"], "path": s["screenshot"]} for s in steps]
+    attachments = attachments_for(OUT)
     report = {
         "results": {
             "tool": {"name": "omarchy-testar", "version": "0.1.0"},
@@ -328,6 +333,7 @@ def validate(steps: list[dict], app: dict, failed: bool, expect_fail: bool) -> N
         assert set(names) == target, f"missing {target - set(names)}; extra {set(names) - target}"
     for path in ("ctrf.json", "junit.xml", "findings.sarif", "sequence.jsonl"):
         assert (OUT / path).is_file()
+    assert_attachments_resolve(OUT, json.loads((OUT / "ctrf.json").read_text()))
 
 
 def main() -> None:

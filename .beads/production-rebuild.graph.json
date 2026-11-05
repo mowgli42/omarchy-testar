@@ -1,0 +1,189 @@
+{
+  "commit_message": "Seed production-rebuild beads from BEADS.md",
+  "nodes": [
+    {
+      "key": "epic",
+      "title": "Production rebuild: live Omarchy seat + report adoption",
+      "type": "epic",
+      "priority": 1,
+      "labels": ["production", "omarchy-testar"],
+      "description": "Replace the simulator-only path with a nested-seat explorer that scrapes AT-SPI, clicks via ydotool, oracles crashes, and emits CTRF/JUnit/SARIF. Fixture sims remain the validated demo until each live bead closes.",
+      "acceptance_criteria": "bd ready shows no open children under this epic for the live seat MVP (nested seat, AT-SPI, actuator, plugin summon, SnarkSentinel click-all, window oracle)."
+    },
+    {
+      "key": "nested-seat",
+      "title": "Nested seat for safe GUI exploration",
+      "type": "feature",
+      "priority": 1,
+      "parent_key": "epic",
+      "labels": ["live-seat", "wayland"],
+      "spec_id": "openspec/specs/scriptless-explore/spec.md",
+      "description": "Run the SUT in a nested Hyprland or a systemd seat so ydotool cannot click the host. Reverse the simulator-only choice.",
+      "acceptance_criteria": "Documented launch script starts a nested seat; explorer docs warn against host-seat clicks; a smoke command proves the nested compositor is up."
+    },
+    {
+      "key": "atspi",
+      "title": "AT-SPI connector for widget scrape",
+      "type": "feature",
+      "priority": 1,
+      "parent_key": "epic",
+      "labels": ["live-seat", "a11y"],
+      "spec_id": "openspec/specs/scriptless-explore/spec.md",
+      "description": "dogtail or pyatspi against apps that expose a tree. Map roles to button/text/dialog/menu item/link as in docs/standards.md.",
+      "acceptance_criteria": "Given a GTK (or a11y-enabled) app in the nested seat, derive at least one role=button action from the AT-SPI tree."
+    },
+    {
+      "key": "actuator",
+      "title": "Input actuator (ydotool / EIS) scoped to nested seat",
+      "type": "feature",
+      "priority": 1,
+      "parent_key": "epic",
+      "labels": ["live-seat", "wayland"],
+      "spec_id": "openspec/specs/scriptless-explore/spec.md",
+      "description": "Click and type via ydotool or EIS inside the nested seat only. Do not call xdotool.",
+      "acceptance_criteria": "Actuator clicks a known AT-SPI button in the nested seat; host seat receives no injected events."
+    },
+    {
+      "key": "window-oracle",
+      "title": "Window / journal crash oracle",
+      "type": "feature",
+      "priority": 2,
+      "parent_key": "epic",
+      "labels": ["oracle", "live-seat"],
+      "spec_id": "openspec/specs/scriptless-explore/spec.md",
+      "description": "hyprctl process exit, window unmapped, journalctl error. Reuse the JSONL crash-log oracle prototyped in sim/snarksentinel_click.py for SnarkSentinel logs.",
+      "acceptance_criteria": "Killing the SUT mid-walk fails CTRF and writes SARIF oracle/window or oracle/crash-log."
+    },
+    {
+      "key": "live-plugin",
+      "title": "Live plugin summon for example.status-panel",
+      "type": "feature",
+      "priority": 1,
+      "parent_key": "epic",
+      "labels": ["live-seat", "plugin-ui"],
+      "spec_id": "openspec/specs/plugin-ui/spec.md",
+      "description": "omarchy plugin add the status panel, omarchy-shell summon example.status-panel, read AT-SPI names Status / Refresh / Close.",
+      "acceptance_criteria": "Summon through a running omarchy-shell makes Status/Refresh/Close visible to AT-SPI; click-all of those three passes with screenshots."
+    },
+    {
+      "key": "live-snarksentinel",
+      "title": "Live SnarkSentinel click-all",
+      "type": "feature",
+      "priority": 1,
+      "parent_key": "epic",
+      "labels": ["live-seat", "snarksentinel"],
+      "spec_id": "openspec/specs/snarksentinel-explore/spec.md",
+      "description": "Summon io.github.mowgli42.snarksentinel, AT-SPI buttons only (same policy as sim/snarksentinel_click.py), PNG screenshot after each click, watch ~/.local/share/snarksentinel/logs + journalctl. Prefer Accessible.name / objectName on Panel.qml buttons in the snarksentinel repo.",
+      "acceptance_criteria": "Live click-all visits each AT-SPI button once; PNG per step; crash-shaped log fails the run."
+    },
+    {
+      "key": "a11y-qml",
+      "title": "Add Accessible.name/objectName on SnarkSentinel Panel buttons",
+      "type": "task",
+      "priority": 2,
+      "parent_key": "epic",
+      "labels": ["snarksentinel", "a11y"],
+      "spec_id": "openspec/specs/snarksentinel-explore/spec.md",
+      "description": "Work in mowgli42/snarksentinel omarchy-plugin: mark Button controls with Accessible.name matching text and stable objectName so AT-SPI matches the fixture inventory. Not a testar runtime change.",
+      "acceptance_criteria": "Panel.qml / BarWidget.qml expose Accessible.name for primary buttons; scrape and AT-SPI agree on names."
+    },
+    {
+      "key": "screenshot-fallback",
+      "title": "Screenshot fallback state source",
+      "type": "feature",
+      "priority": 3,
+      "parent_key": "epic",
+      "labels": ["live-seat", "vision"],
+      "description": "Apps with an empty accessibility tree. Vision or template match. Higher false-action rate. Keep it a separate state source from AT-SPI.",
+      "acceptance_criteria": "Documented fallback path derives at least one click target from a screenshot when AT-SPI is empty."
+    },
+    {
+      "key": "playwright",
+      "title": "Playwright state source for Chromium apps",
+      "type": "feature",
+      "priority": 3,
+      "parent_key": "epic",
+      "labels": ["web"],
+      "description": "Chromium web apps shipped with Omarchy. Same action selector, different scrape (Playwright accessibility snapshot).",
+      "acceptance_criteria": "One Omarchy web app walk emits sequence.jsonl with role=button actions from a Playwright snapshot."
+    },
+    {
+      "key": "ctrf-attachments",
+      "title": "CTRF attachments for screenshots and sequence.jsonl",
+      "type": "task",
+      "priority": 2,
+      "parent_key": "epic",
+      "labels": ["reports", "fixture"],
+      "spec_id": "openspec/specs/scriptless-explore/spec.md",
+      "description": "Screenshots and sequence.jsonl as CTRF attachments across all simulators (explore, plugin_ui, snarksentinel_click), not loose files only.",
+      "acceptance_criteria": "Each sim CTRF test entry lists sequence.jsonl and any screenshots under attachments[]; paths resolve under sim/out/."
+    },
+    {
+      "key": "gha",
+      "title": "GitHub Actions: JUnit + SARIF upload",
+      "type": "task",
+      "priority": 2,
+      "parent_key": "epic",
+      "labels": ["ci", "reports"],
+      "description": "Upload JUnit XML as the test report and SARIF as code scanning. Fail the job on oracle failure.",
+      "acceptance_criteria": "CI runs sim explorers; junit and sarif artifacts uploaded; inject-crash job is allowed to fail the step that asserts failure, while clean jobs must pass."
+    },
+    {
+      "key": "cucumber-messages",
+      "title": "Cucumber Messages when Gherkin executes",
+      "type": "task",
+      "priority": 4,
+      "parent_key": "epic",
+      "labels": ["reports", "deferred"],
+      "description": "When Gherkin scenarios are executed rather than mirrored, emit ndjson messages. Do not grow the legacy Cucumber JSON formatter.",
+      "acceptance_criteria": "A real Gherkin runner emits Cucumber Messages ndjson for validated scenarios."
+    },
+    {
+      "key": "open-test-reporting",
+      "title": "Open Test Reporting export (deferred)",
+      "type": "task",
+      "priority": 4,
+      "parent_key": "epic",
+      "labels": ["reports", "deferred"],
+      "description": "Only after a non-JVM consumer exists in the toolchain.",
+      "acceptance_criteria": "Documented consumer exists; exporter maps CTRF runs to Open Test Reporting events."
+    },
+    {
+      "key": "action-policy",
+      "title": "Coverage-biased action policy",
+      "type": "task",
+      "priority": 3,
+      "parent_key": "epic",
+      "labels": ["explore"],
+      "spec_id": "openspec/specs/snarksentinel-explore/spec.md",
+      "description": "Replace fixed-seed random with a coverage bias on unvisited roles. snarksentinel_click.py already does name-coverage click-all; generalize for explore.py and live seat.",
+      "acceptance_criteria": "Shared policy module picks unvisited role=button actions; explore.py and snarksentinel_click.py both use it."
+    },
+    {
+      "key": "replay",
+      "title": "Replay failing sequence from sequence.jsonl",
+      "type": "task",
+      "priority": 2,
+      "parent_key": "epic",
+      "labels": ["fixture", "explore"],
+      "spec_id": "openspec/specs/scriptless-explore/spec.md",
+      "description": "Reconstruct a failing sequence from sequence.jsonl on the same fixture. Live replay waits on stable widget ids across launches.",
+      "acceptance_criteria": "python3 sim/replay.py --sequence sim/out/.../sequence.jsonl re-executes the fixture walk and matches pass/fail."
+    }
+  ],
+  "edges": [
+    { "from_key": "actuator", "to_key": "nested-seat", "type": "blocks" },
+    { "from_key": "live-plugin", "to_key": "nested-seat", "type": "blocks" },
+    { "from_key": "live-snarksentinel", "to_key": "nested-seat", "type": "blocks" },
+    { "from_key": "window-oracle", "to_key": "nested-seat", "type": "blocks" },
+    { "from_key": "live-plugin", "to_key": "atspi", "type": "blocks" },
+    { "from_key": "live-snarksentinel", "to_key": "atspi", "type": "blocks" },
+    { "from_key": "live-plugin", "to_key": "actuator", "type": "blocks" },
+    { "from_key": "live-snarksentinel", "to_key": "actuator", "type": "blocks" },
+    { "from_key": "live-snarksentinel", "to_key": "live-plugin", "type": "blocks" },
+    { "from_key": "live-snarksentinel", "to_key": "a11y-qml", "type": "blocks" },
+    { "from_key": "screenshot-fallback", "to_key": "atspi", "type": "blocks" },
+    { "from_key": "gha", "to_key": "ctrf-attachments", "type": "blocks" },
+    { "from_key": "open-test-reporting", "to_key": "cucumber-messages", "type": "blocks" }
+  ]
+}

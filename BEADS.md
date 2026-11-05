@@ -1,18 +1,43 @@
 # Beads — production rebuild
 
-Not implemented. Prefix `omarchy-testar` when `bd init` is run.
+Initialized with prefix `omarchy-testar`. Source of truth is `bd`, not this file.
 
-1. **Nested seat.** Run the SUT in a nested Hyprland or a systemd seat so ydotool cannot click the host. Reverse the simulator-only choice.
-1b. **Live plugin summon.** `omarchy plugin add` the status panel, `omarchy-shell summon example.status-panel`, read AT-SPI names Status / Refresh / Close.
-1c. **Live SnarkSentinel click-all.** Summon `io.github.mowgli42.snarksentinel`, AT-SPI buttons only (same policy as `sim/snarksentinel_click.py`), PNG screenshot after each click, watch `~/.local/share/snarksentinel/logs` + journalctl. Prefer adding `Accessible.name` / `objectName` on Panel.qml buttons so the tree matches the QML labels.
-2. **AT-SPI connector.** dogtail or pyatspi against GTK apps. Map roles as in `docs/standards.md`.
-3. **Input actuator.** ydotool or EIS, scoped to the nested seat. Do not call xdotool.
-4. **Window oracle.** hyprctl: process exit, window unmapped, journalctl error. Crash-log JSONL oracle already prototyped in `sim/snarksentinel_click.py`.
-5. **Screenshot fallback.** Apps with an empty accessibility tree. Vision or template match. Higher false-action rate. Keep it a separate state source.
-6. **Playwright state source.** Chromium web apps shipped with Omarchy. Same action selector, different scrape.
-7. **CTRF attachments.** Screenshots and sequence.jsonl as CTRF attachments, not loose files only.
-8. **GitHub Actions.** Upload JUnit XML as the test report and SARIF as code scanning. Fail the job on oracle failure.
-9. **Cucumber Messages.** When Gherkin scenarios are executed rather than mirrored, emit ndjson messages. Do not grow the legacy Cucumber JSON formatter.
-10. **Open Test Reporting export.** Only after a non-JVM consumer exists in the toolchain.
-11. **Action policy.** Replace fixed-seed random with a coverage bias on unvisited roles. TESTAR's research problem. Not needed to prove the report contract.
-12. **Replay.** Reconstruct a failing sequence from sequence.jsonl on the same fixture. Live replay waits on stable widget ids across launches.
+```bash
+bd ready                  # claimable work
+bd show <id>              # details + acceptance
+bd update <id> --claim    # start
+bd close <id>             # done
+```
+
+Reseed plan (documentation only): `.beads/production-rebuild.graph.json`
+
+## Epic
+
+| ID | Title |
+|----|-------|
+| `omarchy-testar-mtw` | Production rebuild: live Omarchy seat + report adoption |
+
+## Live seat chain (blocked until nested seat + AT-SPI + actuator)
+
+| ID | Title | Blocked by |
+|----|-------|------------|
+| `omarchy-testar-c23` | Nested seat for safe GUI exploration | — ready |
+| `omarchy-testar-9xv` | AT-SPI connector for widget scrape | — ready |
+| `omarchy-testar-3sa` | Input actuator (ydotool / EIS) | nested seat |
+| `omarchy-testar-1h5` | Live plugin summon (example.status-panel) | seat + AT-SPI + actuator |
+| `omarchy-testar-6oo` | Accessible.name on SnarkSentinel Panel buttons | — ready (snarksentinel repo) |
+| `omarchy-testar-g77` | Live SnarkSentinel click-all | plugin summon + a11y QML |
+| `omarchy-testar-9ze` | Window / journal crash oracle | nested seat |
+| `omarchy-testar-pgx` | Screenshot fallback state source | AT-SPI |
+
+## Fixture / adoption (can proceed without a live seat)
+
+| ID | Title | Status |
+|----|-------|--------|
+| `omarchy-testar-4bf` | CTRF attachments for screenshots and sequence.jsonl | closed |
+| `omarchy-testar-gmw` | Replay failing sequence from sequence.jsonl | closed |
+| `omarchy-testar-9mr` | GitHub Actions: JUnit + SARIF upload | closed |
+| `omarchy-testar-enu` | Coverage-biased action policy | open |
+| `omarchy-testar-y2z` | Playwright state source for Chromium apps | open |
+| `omarchy-testar-8pb` | Cucumber Messages when Gherkin executes | open |
+| `omarchy-testar-5z7` | Open Test Reporting export (deferred; after Cucumber Messages) | open |

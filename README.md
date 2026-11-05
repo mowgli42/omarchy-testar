@@ -30,6 +30,7 @@ python3 sim/plugin_ui.py            # Omarchy plugin manifest + panel controls
 python3 sim/snarksentinel_click.py  # click-all SnarkSentinel buttons + crash-log oracle
 python3 sim/snarksentinel_click.py --inject-crash
 python3 sim/snarksentinel_click.py --scrape ../snarksentinel/omarchy-plugin
+python3 sim/replay.py --sequence sim/out/sequence.jsonl --app sim/fixture_app.json
 ```
 
 Plugin under test: `examples/status-panel` (bar widget summons a panel). SnarkSentinel click-all uses `sim/fixtures/snarksentinel/` (frozen from `Panel.qml` / `BarWidget.qml`). Live `omarchy-shell` summon is not run here.

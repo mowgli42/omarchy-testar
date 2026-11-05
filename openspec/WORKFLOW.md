@@ -29,7 +29,8 @@ Follow this order unless the user explicitly requests otherwise.
 - `python3 sim/explore.py`
 - `python3 sim/plugin_ui.py`
 - `python3 sim/snarksentinel_click.py` and `python3 sim/snarksentinel_click.py --inject-crash`
-- Confirm `sim/out/ctrf.json`, `sim/out/junit.xml`, `sim/out/findings.sarif` (and `sim/out/snarksentinel/` for the click-all run)
+- `python3 sim/replay.py --sequence sim/out/sequence.jsonl --app sim/fixture_app.json`
+- Confirm `sim/out/ctrf.json`, `sim/out/junit.xml`, `sim/out/findings.sarif` (and `sim/out/snarksentinel/` for the click-all run); CTRF tests must list attachments
 - Refresh nothing visual until a live seat exists
 
 ## 5. Archiving

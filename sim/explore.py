@@ -2,10 +2,14 @@
 """Fixture explorer. Proves the report contract, not a live Hyprland seat."""
 
 import json
+import sys
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
+sys.path.insert(0, str(ROOT))
+from reports import assert_attachments_resolve, attachments_for  # noqa: E402
+
 OUT = ROOT / "out"
 SEED_ACTIONS = ["Open", "Back", "Quit"]  # fixed policy: reach editor, return, fatal quit
 SEQ_LEN = 3
@@ -60,6 +64,7 @@ def write_ctrf(steps):
                     "duration": 1,
                     "message": f"fatal action {fatal['name']} in state {fatal['state_id']}",
                     "trace": json.dumps(steps),
+                    "attachments": attachments_for(OUT),
                 }
             ],
         }
@@ -110,6 +115,7 @@ def main():
     assert len(steps) == SEQ_LEN
     assert any(s["name"] == "Open" and s["action"] == "click" for s in steps)
     assert report["results"]["tests"][0]["status"] == "failed"
+    assert_attachments_resolve(OUT, report)
     print(f"wrote {len(steps)} steps to {OUT}")
 
 
