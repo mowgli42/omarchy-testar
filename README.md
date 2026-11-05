@@ -25,11 +25,16 @@ sim/               fixture app + explore.py (validated slice)
 ## Demo
 
 ```bash
-python3 sim/explore.py          # generic fixture walk
-python3 sim/plugin_ui.py        # Omarchy plugin manifest + panel controls
+python3 sim/explore.py              # generic fixture walk
+python3 sim/plugin_ui.py            # Omarchy plugin manifest + panel controls
+python3 sim/snarksentinel_click.py  # click-all SnarkSentinel buttons + crash-log oracle
+python3 sim/snarksentinel_click.py --inject-crash
+python3 sim/snarksentinel_click.py --scrape ../snarksentinel/omarchy-plugin
 ```
 
-Plugin under test: `examples/status-panel` (bar widget summons a panel). Live `omarchy-shell` summon is not run here.
+Plugin under test: `examples/status-panel` (bar widget summons a panel). SnarkSentinel click-all uses `sim/fixtures/snarksentinel/` (frozen from `Panel.qml` / `BarWidget.qml`). Live `omarchy-shell` summon is not run here.
+
+**Buttons live in QML**, but the explorer does not parse a script of clicks. It derives `role=button` actions (from `Accessible.name` or `Button.text`), clicks each reachable name once, writes a screenshot after every click, then checks JSONL for crash-shaped lines.
 
 ## Workflow
 
