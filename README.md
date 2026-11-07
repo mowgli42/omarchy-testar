@@ -17,9 +17,9 @@ Canonical run report is [CTRF](https://github.com/ctrf-io/ctrf) JSON (schema, at
 ```
 openspec/          living specs + the bootstrap change
 features/          Gherkin mirror
-docs/standards.md  format decision
-BEADS.md           production rebuild, not implemented
-sim/               fixture app + explore.py (validated slice)
+docs/              standards, nested seat, plugin Accessible markers
+BEADS.md           bd-backed production rebuild
+sim/               fixture app + explorers
 ```
 
 ## Demo
@@ -40,6 +40,8 @@ python3 sim/atspi.py                              # fixture AT-SPI → button ac
 Plugin under test: `examples/status-panel` (bar widget summons a panel). SnarkSentinel click-all uses `sim/fixtures/snarksentinel/` (frozen from `Panel.qml` / `BarWidget.qml`). Live `omarchy-shell` summon is not run here.
 
 **Buttons live in QML**, but the explorer does not parse a script of clicks. It derives `role=button` actions (from `Accessible.name` or `Button.text`), clicks each reachable name once, writes a screenshot after every click, then checks JSONL for crash-shaped lines.
+
+**Plugin authors:** mark controls so testar can find them — [docs/plugin-accessible-markers.md](docs/plugin-accessible-markers.md).
 
 ## Workflow
 
