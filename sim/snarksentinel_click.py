@@ -49,21 +49,45 @@ def enabled_buttons(app: dict, state: str) -> list[dict]:
     return buttons
 
 
-def reachable_button_names(app: dict) -> set[str]:
-    """Unique button names across states the coverage walk can enter."""
-    seen_states: set[str] = set()
+def dynamic_buttons(app: dict, state: str) -> list[dict]:
+    """Pillar actions whose Accessible.name is bound at runtime."""
+    out: list[dict] = []
+    for w in app.get("dynamic_actions") or []:
+        if w.get("role") != "button":
+            continue
+        if w.get("from") and w["from"] != state:
+            continue
+        if not w.get("name"):
+            continue
+        out.append(w)
+    return out
+
+
+def reachable_states(app: dict) -> set[str]:
+    seen: set[str] = set()
     queue = [app["initial"]]
-    names: set[str] = set()
     while queue:
         state = queue.pop(0)
-        if state in seen_states:
+        if state in seen:
             continue
-        seen_states.add(state)
+        seen.add(state)
+        for w in enabled_buttons(app, state) + dynamic_buttons(app, state):
+            nxt = w.get("next")
+            if nxt and nxt not in seen:
+                queue.append(nxt)
+    return seen
+
+
+def reachable_button_names(app: dict) -> set[str]:
+    """Unique static button names across states the coverage walk can enter.
+
+    Dynamic pillar labels (Install / Review results / …) are intentionally
+    excluded from the offline click-all target; live AT-SPI walks may see them.
+    """
+    names: set[str] = set()
+    for state in reachable_states(app):
         for w in enabled_buttons(app, state):
             names.add(w["name"])
-            nxt = w.get("next")
-            if nxt and nxt not in seen_states:
-                queue.append(nxt)
     return names
 
 
@@ -145,17 +169,24 @@ def click_all(app: dict, watched: Path, inject_crash: bool) -> list[dict]:
         buttons = enabled_buttons(app, state)
         choice = policy_pick(buttons, visited, roles=BUTTON)
         if choice is None:
-            # Local dead-end: jump to any reachable state that still has unvisited buttons.
-            progressed = False
-            for sid, _sdef in app["states"].items():
-                leftover = policy_pick(enabled_buttons(app, sid), visited, roles=BUTTON)
-                if leftover is not None:
-                    state = sid
-                    progressed = True
+            # Prefer a dynamic action that opens a still-unvisited state (e.g. review).
+            dyn = policy_pick(dynamic_buttons(app, state), visited, roles=BUTTON)
+            if dyn is not None:
+                choice = dyn
+            else:
+                # Local dead-end: jump only within the reachable state graph.
+                progressed = False
+                for sid in reachable_states(app):
+                    leftover = policy_pick(enabled_buttons(app, sid), visited, roles=BUTTON)
+                    if leftover is None:
+                        leftover = policy_pick(dynamic_buttons(app, sid), visited, roles=BUTTON)
+                    if leftover is not None:
+                        state = sid
+                        progressed = True
+                        break
+                if not progressed:
                     break
-            if not progressed:
-                break
-            continue
+                continue
 
         mark_visited(visited, choice)
         maybe_inject(watched, choice, inject_crash)
@@ -324,8 +355,13 @@ def validate(steps: list[dict], app: dict, failed: bool, expect_fail: bool) -> N
     else:
         assert not failed
         target = reachable_button_names(app)
-        # Apply is only required when we do not stop early on crash.
-        assert set(names) == target, f"missing {target - set(names)}; extra {set(names) - target}"
+        dynamic_names = {
+            w["name"] for w in (app.get("dynamic_actions") or []) if w.get("name")
+        }
+        missing = target - set(names)
+        unexpected = set(names) - target - dynamic_names
+        assert not missing, f"missing {missing}"
+        assert not unexpected, f"extra {unexpected}"
     for path in ("ctrf.json", "junit.xml", "findings.sarif", "sequence.jsonl"):
         assert (OUT / path).is_file()
     assert_attachments_resolve(OUT, json.loads((OUT / "ctrf.json").read_text()))

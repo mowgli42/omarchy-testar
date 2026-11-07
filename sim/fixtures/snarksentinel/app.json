@@ -1,7 +1,36 @@
 {
   "id": "io.github.mowgli42.snarksentinel",
   "source": "snarksentinel/omarchy-plugin/{BarWidget,Panel}.qml",
-  "note": "Frozen button graph aligned with simplified Panel (Posture/Apps/Scan). role is always button.",
+  "note": "Frozen graph matching Accessible.name scrape (2026-11-07). Pillar actions bind Accessible.name to modelData.label at runtime and are not listed as static inventory — see dynamic_actions.",
+  "dynamic_actions": [
+    {
+      "role": "button",
+      "name": "Install",
+      "name_from": "modelData.label",
+      "objectName": "pillar-action",
+      "from": "posture",
+      "next": "posture",
+      "note": "Shown when a malware pillar summary mentions pacman -S rkhunter."
+    },
+    {
+      "role": "button",
+      "name": "Run scan",
+      "name_from": "modelData.label",
+      "objectName": "pillar-action",
+      "from": "posture",
+      "next": "posture",
+      "note": "Legacy label; current Panel.qml emits Scan for malware pillar actions."
+    },
+    {
+      "role": "button",
+      "name": "Review results",
+      "name_from": "modelData.label",
+      "objectName": "pillar-action",
+      "from": "posture",
+      "next": "review_dialog",
+      "note": "Opens review_dialog; Accessible.name is modelData.label, not a static string."
+    }
+  ],
   "initial": "bar",
   "states": {
     "bar": {
@@ -14,9 +43,6 @@
         {"role": "button", "name": "Posture", "action": "click", "next": "posture"},
         {"role": "button", "name": "Apps", "action": "click", "next": "apps"},
         {"role": "button", "name": "Scan", "action": "click", "next": "scan_dialog"},
-        {"role": "button", "name": "Install", "action": "click", "next": "posture"},
-        {"role": "button", "name": "Run scan", "action": "click", "next": "posture"},
-        {"role": "button", "name": "Review results", "action": "click", "next": "review_dialog"},
         {"role": "button", "name": "Fix prompt", "action": "click", "next": "fix_dialog"}
       ]
     },
