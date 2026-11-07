@@ -1,0 +1,12 @@
+{
+  "note": "Offline stand-in for an AT-SPI dump. Roles use AT-SPI names; sim/atspi.py maps them.",
+  "nodes": [
+    {"role": "frame", "name": "Status panel", "path": "panel"},
+    {"role": "push button", "name": "Status", "path": "panel/bar"},
+    {"role": "push button", "name": "Refresh", "path": "panel/refresh"},
+    {"role": "push button", "name": "Close", "path": "panel/close"},
+    {"role": "text", "name": "Ready", "path": "panel/status"},
+    {"role": "menu item", "name": "Quit", "path": "panel/menu/quit"},
+    {"role": "link", "name": "Docs", "path": "panel/docs"}
+  ]
+}

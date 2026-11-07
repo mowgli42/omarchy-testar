@@ -2,14 +2,19 @@
 """Fixture explorer. Proves the report contract, not a live Hyprland seat."""
 
 import json
+import sys
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
+sys.path.insert(0, str(ROOT))
+from policy import mark_visited, pick_unvisited  # noqa: E402
+from reports import assert_attachments_resolve, attachments_for  # noqa: E402
+
 OUT = ROOT / "out"
-SEED_ACTIONS = ["Open", "Back", "Quit"]  # fixed policy: reach editor, return, fatal quit
 SEQ_LEN = 3
 RUN_NAME = "fixture-explore"
+BUTTON = {"button"}
 
 
 def load_app():
@@ -19,11 +24,16 @@ def load_app():
 def walk(app):
     state = app["initial"]
     steps = []
-    for i, name in enumerate(SEED_ACTIONS[:SEQ_LEN], start=1):
-        widget = next(w for w in app["states"][state]["widgets"] if w["name"] == name)
+    visited: set[str] = set()
+    while len(steps) < SEQ_LEN:
+        widgets = app["states"][state]["widgets"]
+        widget = pick_unvisited(widgets, visited, roles=BUTTON)
+        if widget is None:
+            break
+        mark_visited(visited, widget)
         steps.append(
             {
-                "seq": i,
+                "seq": len(steps) + 1,
                 "state_id": state,
                 "action": widget["action"],
                 "role": widget["role"],
@@ -60,6 +70,7 @@ def write_ctrf(steps):
                     "duration": 1,
                     "message": f"fatal action {fatal['name']} in state {fatal['state_id']}",
                     "trace": json.dumps(steps),
+                    "attachments": attachments_for(OUT),
                 }
             ],
         }
@@ -110,6 +121,7 @@ def main():
     assert len(steps) == SEQ_LEN
     assert any(s["name"] == "Open" and s["action"] == "click" for s in steps)
     assert report["results"]["tests"][0]["status"] == "failed"
+    assert_attachments_resolve(OUT, report)
     print(f"wrote {len(steps)} steps to {OUT}")
 
 

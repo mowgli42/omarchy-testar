@@ -8,10 +8,15 @@ shell contract: panel entry points expose open() and close().
 
 import json
 import re
+import sys
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+SIM = Path(__file__).resolve().parent
+sys.path.insert(0, str(SIM))
+from reports import assert_attachments_resolve, attachments_for  # noqa: E402
+
 PLUGIN = ROOT / "examples" / "status-panel"
 OUT = ROOT / "sim" / "out"
 RUN = "status-panel-ui"
@@ -92,7 +97,14 @@ def write_reports(steps, errors):
         "results": {
             "tool": {"name": "omarchy-testar", "version": "0.0.2"},
             "summary": {"tests": 1, "passed": 0 if failed else 1, "failed": 1 if failed else 0, "skipped": 0, "pending": 0, "other": 0, "start": 0, "stop": 1},
-            "tests": [{"name": RUN, "status": "failed" if failed else "passed", "duration": 1, "message": message, "trace": json.dumps(steps)}],
+            "tests": [{
+                "name": RUN,
+                "status": "failed" if failed else "passed",
+                "duration": 1,
+                "message": message,
+                "trace": json.dumps(steps),
+                "attachments": attachments_for(OUT, "plugin-sequence.jsonl"),
+            }],
         }
     }
     (OUT / "plugin-ctrf.json").write_text(json.dumps(report, indent=2) + "\n")
@@ -126,6 +138,8 @@ def main():
     assert steps[1]["status"] == "Checked"
     assert steps[2]["panel_visible"] is False
     assert not failed
+    report = json.loads((OUT / "plugin-ctrf.json").read_text())
+    assert_attachments_resolve(OUT, report)
     print(f"plugin {manifest['id']} walk ok -> {OUT}")
 
 

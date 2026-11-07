@@ -27,7 +27,10 @@ Follow this order unless the user explicitly requests otherwise.
 ## 4. Validation
 
 - `python3 sim/explore.py`
-- Confirm `sim/out/ctrf.json`, `sim/out/junit.xml`, `sim/out/findings.sarif`
+- `python3 sim/plugin_ui.py`
+- `python3 sim/snarksentinel_click.py` and `python3 sim/snarksentinel_click.py --inject-crash`
+- `python3 sim/replay.py --sequence sim/out/sequence.jsonl --app sim/fixture_app.json`
+- Confirm `sim/out/ctrf.json`, `sim/out/junit.xml`, `sim/out/findings.sarif` (and `sim/out/snarksentinel/` for the click-all run); CTRF tests must list attachments
 - Refresh nothing visual until a live seat exists
 
 ## 5. Archiving
@@ -40,3 +43,4 @@ Follow this order unless the user explicitly requests otherwise.
 |------------|------|
 | Index | `openspec/specs/README.md` |
 | Scriptless explore | `openspec/specs/scriptless-explore/spec.md` |
+| SnarkSentinel click-all | `openspec/specs/snarksentinel-explore/spec.md` |

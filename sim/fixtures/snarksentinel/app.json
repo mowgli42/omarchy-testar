@@ -1,0 +1,55 @@
+{
+  "id": "io.github.mowgli42.snarksentinel",
+  "source": "snarksentinel/omarchy-plugin/{BarWidget,Panel}.qml",
+  "note": "Frozen button graph aligned with simplified Panel (Posture/Apps/Scan). role is always button.",
+  "initial": "bar",
+  "states": {
+    "bar": {
+      "widgets": [
+        {"role": "button", "name": "SnarkSentinel", "action": "summon", "next": "posture"}
+      ]
+    },
+    "posture": {
+      "widgets": [
+        {"role": "button", "name": "Posture", "action": "click", "next": "posture"},
+        {"role": "button", "name": "Apps", "action": "click", "next": "apps"},
+        {"role": "button", "name": "Scan", "action": "click", "next": "scan_dialog"},
+        {"role": "button", "name": "Install", "action": "click", "next": "posture"},
+        {"role": "button", "name": "Run scan", "action": "click", "next": "posture"},
+        {"role": "button", "name": "Review results", "action": "click", "next": "review_dialog"},
+        {"role": "button", "name": "Fix prompt", "action": "click", "next": "fix_dialog"}
+      ]
+    },
+    "apps": {
+      "widgets": [
+        {"role": "button", "name": "Posture", "action": "click", "next": "posture"},
+        {"role": "button", "name": "Apps", "action": "click", "next": "apps"},
+        {"role": "button", "name": "Scan", "action": "click", "next": "scan_dialog"},
+        {"role": "button", "name": "Refresh list", "action": "click", "next": "apps"},
+        {"role": "button", "name": "Set net on", "action": "click", "next": "apps"},
+        {"role": "button", "name": "Set net off", "action": "click", "next": "apps"},
+        {"role": "button", "name": "Regenerate", "action": "click", "next": "apps"},
+        {"role": "button", "name": "Copy forensic", "action": "click", "next": "apps"}
+      ]
+    },
+    "scan_dialog": {
+      "widgets": [
+        {"role": "button", "name": "Scan", "action": "click", "next": "posture"},
+        {"role": "button", "name": "Close", "action": "click", "next": "posture"}
+      ]
+    },
+    "review_dialog": {
+      "widgets": [
+        {"role": "button", "name": "Accept these results", "action": "click", "next": "posture", "inject_crash": true},
+        {"role": "button", "name": "Fix prompt", "action": "click", "next": "fix_dialog"},
+        {"role": "button", "name": "Close", "action": "click", "next": "posture"}
+      ]
+    },
+    "fix_dialog": {
+      "widgets": [
+        {"role": "button", "name": "Copy", "action": "click", "next": "fix_dialog"},
+        {"role": "button", "name": "Close", "action": "click", "next": "posture"}
+      ]
+    }
+  }
+}
