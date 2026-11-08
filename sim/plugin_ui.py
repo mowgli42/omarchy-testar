@@ -52,8 +52,11 @@ def controls(qml: str):
 
 
 def walk(manifest):
-    panel_qml = (PLUGIN / manifest["entryPoints"]["panel"]).read_text()
-    bar_qml = (PLUGIN / manifest["entryPoints"]["barWidget"]).read_text()
+    entries = manifest.get("entryPoints") or {}
+    bar_path = PLUGIN / entries["barWidget"]
+    panel_path = PLUGIN / entries["panel"] if entries.get("panel") else PLUGIN / "Panel.qml"
+    bar_qml = bar_path.read_text()
+    panel_qml = panel_path.read_text()
     steps = []
     state = "bar"
     status = "Ready"

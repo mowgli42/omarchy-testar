@@ -2,13 +2,12 @@
   "schemaVersion": 1,
   "id": "example.status-panel",
   "name": "Status panel",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": "omarchy-testar",
   "description": "Bar widget that summons a status panel. Fixture for plugin UI exploration.",
-  "kinds": ["bar-widget", "panel"],
+  "kinds": ["bar-widget"],
   "entryPoints": {
-    "barWidget": "Widget.qml",
-    "panel": "Panel.qml"
+    "barWidget": "Widget.qml"
   },
   "barWidget": {
     "displayName": "Status",
