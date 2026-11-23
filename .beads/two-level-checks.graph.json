@@ -1,0 +1,157 @@
+{
+  "commit_message": "Seed two-level logic-audit and GUI-exercise beads",
+  "nodes": [
+    {
+      "key": "two-level",
+      "title": "Two-level checks: logic audit then GUI exercise",
+      "type": "epic",
+      "priority": 1,
+      "labels": ["omarchy-testar", "two-level"],
+      "spec_id": "openspec/changes/add-two-level-checks/proposal.md",
+      "description": "Replace the single scrape-click-oracle loop with a logic audit of the UI code, then a click walk over the buttons that audit associated with actions. Accessibility off skips the click walk. Spec: openspec/changes/add-two-level-checks/.",
+      "acceptance_criteria": "bd ready shows no open children under this epic once the simulator logic audit and GUI exercise beads are closed. Live seat remains a separate child."
+    },
+    {
+      "key": "logic-model",
+      "title": "Logic-audit fixture model",
+      "type": "task",
+      "priority": 1,
+      "parent_key": "two-level",
+      "labels": ["simulator", "logic-audit"],
+      "spec_id": "openspec/changes/add-two-level-checks/specs/logic-audit/spec.md",
+      "description": "sim/fixtures/logic/ and sim/logic_audit.py load role, name, enabled, action, closes, colors, font size, clip, scroll parent, and the accessibility flag. No clicks.",
+      "acceptance_criteria": "python3 sim/logic_audit.py --dump sim/fixtures/logic/readable.json prints those fields and exits 0."
+    },
+    {
+      "key": "button-action",
+      "title": "Fail enabled buttons that have no action",
+      "type": "task",
+      "priority": 1,
+      "parent_key": "two-level",
+      "labels": ["simulator", "logic-audit"],
+      "spec_id": "openspec/changes/add-two-level-checks/specs/logic-audit/spec.md",
+      "description": "Enabled button-role controls need an action binding. Disabled buttons are exempt and are not put on the action map.",
+      "acceptance_criteria": "An enabled button with no action writes SARIF logic/button-without-action. A disabled button with no action does not."
+    },
+    {
+      "key": "close-wiring",
+      "title": "Fail a close control that does not hide the window",
+      "type": "task",
+      "priority": 1,
+      "parent_key": "two-level",
+      "labels": ["simulator", "logic-audit"],
+      "spec_id": "openspec/changes/add-two-level-checks/specs/logic-audit/spec.md",
+      "description": "Close, Close window, Close panel, ×, ✕, or objectName close/dismiss must be enabled and bound to close/hide/quit. This check does not click.",
+      "acceptance_criteria": "Disabled Close and Close-with-a-non-close-action write logic/close-does-not-close. An enabled Close that hides the panel does not."
+    },
+    {
+      "key": "text-readable",
+      "title": "Check text contrast, size, and scroll",
+      "type": "task",
+      "priority": 2,
+      "parent_key": "two-level",
+      "labels": ["simulator", "logic-audit"],
+      "spec_id": "openspec/changes/add-two-level-checks/specs/logic-audit/spec.md",
+      "description": "sim/readability.py: WCAG 2.2 AA on literal colors, warning for unresolved theme colors, explicit font below 12px or 9pt fails, clipped body text needs a Flickable or ScrollView. Button labels may elide.",
+      "acceptance_criteria": "Fixtures cover logic/text-contrast, a passing 4.5:1 pair, warning logic/text-color-unresolved that still passes CTRF, logic/text-too-small, omitted size, logic/text-not-scrollable, a scroll parent, and an exempt button label."
+    },
+    {
+      "key": "a11y-gate",
+      "title": "Accessibility gate for GUI exercise",
+      "type": "task",
+      "priority": 1,
+      "parent_key": "two-level",
+      "labels": ["simulator", "logic-audit"],
+      "spec_id": "openspec/changes/add-two-level-checks/specs/logic-audit/spec.md",
+      "description": "Gate fails when accessibility is off or an enabled button lacks a role and non-empty name. The gate result is the only full skip of level 2.",
+      "acceptance_criteria": "accessibility false writes logic/a11y-disabled. A nameless enabled button writes logic/a11y-marker-missing. Named buttons with accessibility on pass the gate."
+    },
+    {
+      "key": "logic-reports",
+      "title": "Logic-audit CTRF, JUnit, and SARIF",
+      "type": "task",
+      "priority": 2,
+      "parent_key": "two-level",
+      "labels": ["simulator", "logic-audit", "reports"],
+      "spec_id": "openspec/changes/add-two-level-checks/specs/logic-audit/spec.md",
+      "description": "Write sim/out/logic/ctrf.json, junit.xml, and findings.sarif. Test name logic-audit. No sequence.jsonl.",
+      "acceptance_criteria": "The three report files exist, JUnit matches the CTRF status, and the logic run writes no click sequence."
+    },
+    {
+      "key": "exercise-clicks",
+      "title": "Click only buttons associated with an action",
+      "type": "task",
+      "priority": 1,
+      "parent_key": "two-level",
+      "labels": ["simulator", "gui-exercise"],
+      "spec_id": "openspec/changes/add-two-level-checks/specs/gui-exercise/spec.md",
+      "description": "sim/exercise.py clicks each action-map entry once via the fixture transition. It does not click a button with no action and does not use a recorded name list.",
+      "acceptance_criteria": "A two-button map produces one click per name. A third enabled button with no action is absent from sequence.jsonl."
+    },
+    {
+      "key": "exercise-skip",
+      "title": "Skip GUI exercise when the accessibility gate fails",
+      "type": "task",
+      "priority": 1,
+      "parent_key": "two-level",
+      "labels": ["simulator", "gui-exercise"],
+      "spec_id": "openspec/changes/add-two-level-checks/specs/gui-exercise/spec.md",
+      "description": "A failed accessibility gate writes a skipped exercise result and performs no click.",
+      "acceptance_criteria": "python3 sim/exercise.py on an accessibility-off fixture writes CTRF status skipped and an empty sequence."
+    },
+    {
+      "key": "exercise-failures",
+      "title": "Fail exercise on crash or a close that stays open",
+      "type": "task",
+      "priority": 1,
+      "parent_key": "two-level",
+      "labels": ["simulator", "gui-exercise"],
+      "spec_id": "openspec/changes/add-two-level-checks/specs/gui-exercise/spec.md",
+      "description": "Reuse the JSONL crash oracle. Clicking an associated close control fails exercise/close-still-open when the panel stays mapped.",
+      "acceptance_criteria": "--inject-crash writes oracle/crash-log and fails CTRF. A stay-open close writes exercise/close-still-open. A hiding close does not."
+    },
+    {
+      "key": "exercise-reports",
+      "title": "Exercise CTRF, JUnit, SARIF, and sequence",
+      "type": "task",
+      "priority": 2,
+      "parent_key": "two-level",
+      "labels": ["simulator", "gui-exercise", "reports"],
+      "spec_id": "openspec/changes/add-two-level-checks/specs/gui-exercise/spec.md",
+      "description": "Write sim/out/exercise/ separate from sim/out/logic/. Test name gui-exercise. Include sequence.jsonl.",
+      "acceptance_criteria": "Exercise and logic CTRF test names differ, and the exercise sequence log exists after a click run."
+    },
+    {
+      "key": "live-exercise",
+      "title": "Live seat: skip on an empty tree, else click associated buttons",
+      "type": "feature",
+      "priority": 3,
+      "parent_key": "two-level",
+      "labels": ["live-seat", "gui-exercise"],
+      "spec_id": "openspec/changes/add-two-level-checks/specs/gui-exercise/spec.md",
+      "description": "Nested Hyprland only. An empty AT-SPI tree fails logic/a11y-disabled and injects nothing. Otherwise click associated buttons, PNG per click, and fail if close leaves the window mapped. Do not inject into the host seat.",
+      "acceptance_criteria": "Accessibility-off app: no actuator events and skipped exercise. Gated app: one click per associated button, close unmaps, host seat untouched."
+    }
+  ],
+  "edges": [
+    { "from_key": "button-action", "to_key": "logic-model", "type": "blocks" },
+    { "from_key": "close-wiring", "to_key": "logic-model", "type": "blocks" },
+    { "from_key": "text-readable", "to_key": "logic-model", "type": "blocks" },
+    { "from_key": "a11y-gate", "to_key": "logic-model", "type": "blocks" },
+    { "from_key": "logic-reports", "to_key": "button-action", "type": "blocks" },
+    { "from_key": "logic-reports", "to_key": "close-wiring", "type": "blocks" },
+    { "from_key": "logic-reports", "to_key": "text-readable", "type": "blocks" },
+    { "from_key": "logic-reports", "to_key": "a11y-gate", "type": "blocks" },
+    { "from_key": "exercise-clicks", "to_key": "button-action", "type": "blocks" },
+    { "from_key": "exercise-clicks", "to_key": "a11y-gate", "type": "blocks" },
+    { "from_key": "exercise-skip", "to_key": "a11y-gate", "type": "blocks" },
+    { "from_key": "exercise-failures", "to_key": "close-wiring", "type": "blocks" },
+    { "from_key": "exercise-failures", "to_key": "exercise-clicks", "type": "blocks" },
+    { "from_key": "exercise-reports", "to_key": "exercise-clicks", "type": "blocks" },
+    { "from_key": "exercise-reports", "to_key": "exercise-skip", "type": "blocks" },
+    { "from_key": "exercise-reports", "to_key": "exercise-failures", "type": "blocks" },
+    { "from_key": "live-exercise", "to_key": "a11y-gate", "type": "blocks" },
+    { "from_key": "live-exercise", "to_key": "exercise-clicks", "type": "blocks" },
+    { "from_key": "live-exercise", "to_key": "exercise-failures", "type": "blocks" }
+  ]
+}

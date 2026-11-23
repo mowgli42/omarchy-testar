@@ -7,3 +7,5 @@
 | snarksentinel-explore | [snarksentinel-explore/spec.md](snarksentinel-explore/spec.md) | Active — click-all buttons + crash-log oracle validated, live seat future |
 
 Promote new capabilities from `openspec/changes/<change-id>/specs/` when a change is archived.
+
+In flight: [add-two-level-checks](../changes/add-two-level-checks/proposal.md) adds `logic-audit` and `gui-exercise`, and gates the scriptless walk and SnarkSentinel click-all on that action map. Not archived.

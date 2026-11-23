@@ -44,3 +44,4 @@ Follow this order unless the user explicitly requests otherwise.
 | Index | `openspec/specs/README.md` |
 | Scriptless explore | `openspec/specs/scriptless-explore/spec.md` |
 | SnarkSentinel click-all | `openspec/specs/snarksentinel-explore/spec.md` |
+| Two-level checks (in flight) | `openspec/changes/add-two-level-checks/` |
