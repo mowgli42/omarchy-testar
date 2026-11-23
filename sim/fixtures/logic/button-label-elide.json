@@ -1,0 +1,21 @@
+{
+  "id": "button-label-elide",
+  "accessibility": true,
+  "initial": "panel",
+  "states": {
+    "panel": {
+      "widgets": [
+        {
+          "role": "button",
+          "name": "Very long button label that elides",
+          "objectName": "long",
+          "enabled": true,
+          "action": "click",
+          "clip": true,
+          "scrollParent": false,
+          "next": "panel"
+        }
+      ]
+    }
+  }
+}

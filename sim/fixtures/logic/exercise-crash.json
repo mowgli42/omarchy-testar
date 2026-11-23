@@ -1,0 +1,20 @@
+{
+  "id": "exercise-crash",
+  "accessibility": true,
+  "initial": "panel",
+  "states": {
+    "panel": {
+      "widgets": [
+        {
+          "role": "button",
+          "name": "Boom",
+          "objectName": "boom",
+          "enabled": true,
+          "action": "click",
+          "fatal": true,
+          "next": "panel"
+        }
+      ]
+    }
+  }
+}

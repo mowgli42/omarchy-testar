@@ -1,0 +1,40 @@
+{
+  "id": "logic-readable",
+  "accessibility": true,
+  "initial": "panel",
+  "states": {
+    "panel": {
+      "widgets": [
+        {
+          "role": "button",
+          "name": "Refresh",
+          "objectName": "refresh",
+          "enabled": true,
+          "action": "click",
+          "next": "panel"
+        },
+        {
+          "role": "button",
+          "name": "Close",
+          "objectName": "close",
+          "enabled": true,
+          "action": "close",
+          "closes": true,
+          "next": "hidden"
+        },
+        {
+          "role": "text",
+          "name": "Status",
+          "color": "#eceff4",
+          "background": "#1a1b1e",
+          "fontPixelSize": 14,
+          "clip": false,
+          "scrollParent": true
+        }
+      ]
+    },
+    "hidden": {
+      "widgets": []
+    }
+  }
+}

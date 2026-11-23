@@ -1,0 +1,28 @@
+{
+  "id": "text-too-small",
+  "accessibility": true,
+  "initial": "panel",
+  "states": {
+    "panel": {
+      "widgets": [
+        {
+          "role": "button",
+          "name": "Ok",
+          "objectName": "ok",
+          "enabled": true,
+          "action": "click",
+          "next": "panel"
+        },
+        {
+          "role": "text",
+          "name": "Tiny",
+          "color": "#eceff4",
+          "background": "#1a1b1e",
+          "fontPixelSize": 10,
+          "clip": false,
+          "scrollParent": true
+        }
+      ]
+    }
+  }
+}

@@ -46,7 +46,8 @@ def enabled_buttons(app: dict, state: str) -> list[dict]:
     buttons = [w for w in widgets if w.get("role") == "button"]
     if any(w.get("role") != "button" for w in widgets):
         raise AssertionError(f"non-button widget in state {state}")
-    return buttons
+    # Level-2 policy: only buttons the logic audit associates with an action.
+    return [w for w in buttons if w.get("action") and str(w.get("action")).strip()]
 
 
 def reachable_button_names(app: dict) -> set[str]:

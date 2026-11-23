@@ -20,6 +20,6 @@ The explorer SHALL start from a known initial state, derive enabled actions from
 
 #### Scenario: Accessibility gate skips exploration
 
-- **Tag:** Future
+- **Tag:** Validated
 - **WHEN** the accessibility gate has failed
 - **THEN** the sequence log has no actions and the walk result is skipped

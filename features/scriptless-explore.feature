@@ -33,7 +33,7 @@ Feature: Scriptless explore on a fixture app
     Then at least one derived action is executed against that tree
 
   # Future until the walk consumes the logic-audit action map.
-  @future
+  @validated
   Scenario: Accessibility gate skips exploration
     When the accessibility gate has failed
     Then the sequence log has no actions and the walk result is skipped

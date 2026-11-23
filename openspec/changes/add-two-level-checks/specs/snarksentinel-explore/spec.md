@@ -14,6 +14,6 @@ The explorer SHALL select unvisited enabled buttons that the logic audit associa
 
 #### Scenario: Button without an action is left unclicked
 
-- **Tag:** Future
+- **Tag:** Validated
 - **WHEN** the SnarkSentinel surface has an enabled button with no action and other buttons with actions
 - **THEN** the sequence log omits the button that has no action and still clicks the associated buttons

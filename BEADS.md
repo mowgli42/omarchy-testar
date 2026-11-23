@@ -28,7 +28,7 @@ Reseed plans (documentation only): `.beads/production-rebuild.graph.json`, `.bea
 | `omarchy-testar-6oo` | Accessible.name on SnarkSentinel Panel buttons | closed (snarksentinel PR) |
 | `omarchy-testar-g77` | Live SnarkSentinel click-all | plugin summon + a11y QML |
 | `omarchy-testar-9ze` | Window / journal crash oracle | nested seat |
-| `omarchy-testar-pgx` | Screenshot fallback state source | AT-SPI |
+| `omarchy-testar-pgx` | Screenshot fallback state source | closed (`sim/screenshot_fallback.py`) |
 
 ## Fixture / adoption (can proceed without a live seat)
 
@@ -48,14 +48,14 @@ Spec: `openspec/changes/add-two-level-checks/`. Epic `omarchy-testar-ke7`.
 
 | ID | Title | Blocked by |
 |----|-------|------------|
-| `omarchy-testar-bb9` | Logic-audit fixture model | — |
-| `omarchy-testar-b2p` | Fail enabled buttons that have no action | `bb9` |
-| `omarchy-testar-ecf` | Fail a close control that does not hide the window | `bb9` |
-| `omarchy-testar-bim` | Check text contrast, size, and scroll | `bb9` |
-| `omarchy-testar-elg` | Accessibility gate for GUI exercise | `bb9` |
-| `omarchy-testar-is3` | Logic-audit CTRF, JUnit, and SARIF | `b2p`, `ecf`, `bim`, `elg` |
-| `omarchy-testar-cyv` | Click only buttons associated with an action | `b2p`, `elg` |
-| `omarchy-testar-nka` | Skip GUI exercise when the accessibility gate fails | `elg` |
-| `omarchy-testar-ac3` | Fail exercise on crash or a close that stays open | `ecf`, `cyv` |
-| `omarchy-testar-4s1` | Exercise CTRF, JUnit, SARIF, and sequence | `cyv`, `nka`, `ac3` |
-| `omarchy-testar-8tu` | Live seat: skip on an empty tree, else click associated buttons | `elg`, `cyv`, `ac3` |
+| `omarchy-testar-bb9` | Logic-audit fixture model | closed |
+| `omarchy-testar-b2p` | Fail enabled buttons that have no action | closed |
+| `omarchy-testar-ecf` | Fail a close control that does not hide the window | closed |
+| `omarchy-testar-bim` | Check text contrast, size, and scroll | closed |
+| `omarchy-testar-elg` | Accessibility gate for GUI exercise | closed |
+| `omarchy-testar-is3` | Logic-audit CTRF, JUnit, and SARIF | closed |
+| `omarchy-testar-cyv` | Click only buttons associated with an action | closed |
+| `omarchy-testar-nka` | Skip GUI exercise when the accessibility gate fails | closed |
+| `omarchy-testar-ac3` | Fail exercise on crash or a close that stays open | closed |
+| `omarchy-testar-4s1` | Exercise CTRF, JUnit, SARIF, and sequence | closed |
+| `omarchy-testar-8tu` | Live seat: skip on an empty tree, else click associated buttons | closed (`--live-gate-smoke`; real nested PNG still Future) |

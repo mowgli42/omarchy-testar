@@ -1,0 +1,25 @@
+{
+  "id": "button-disabled-no-action",
+  "accessibility": true,
+  "initial": "panel",
+  "states": {
+    "panel": {
+      "widgets": [
+        {
+          "role": "button",
+          "name": "Greyed",
+          "objectName": "greyed",
+          "enabled": false
+        },
+        {
+          "role": "button",
+          "name": "Live",
+          "objectName": "live",
+          "enabled": true,
+          "action": "click",
+          "next": "panel"
+        }
+      ]
+    }
+  }
+}

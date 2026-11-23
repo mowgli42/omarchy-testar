@@ -25,13 +25,17 @@ sim/               fixture app + explorers
 ## Demo
 
 ```bash
-python3 sim/explore.py              # generic fixture walk
+python3 sim/logic_audit.py --self-test   # level 1: button/action, close, text, a11y
+python3 sim/exercise.py --self-test      # level 2: click associated buttons only
+python3 sim/exercise.py --live-gate-smoke  # empty AT-SPI skips; populated tree dry-runs clicks
+python3 sim/explore.py              # generic fixture walk (gated by logic audit)
 python3 sim/plugin_ui.py            # Omarchy plugin manifest + panel controls
 python3 sim/snarksentinel_click.py  # click-all SnarkSentinel buttons + crash-log oracle
 python3 sim/snarksentinel_click.py --inject-crash
 python3 sim/snarksentinel_click.py --scrape ../snarksentinel/omarchy-plugin
 python3 sim/replay.py --sequence sim/out/sequence.jsonl --app sim/fixture_app.json
 python3 sim/atspi.py                              # fixture AT-SPI → button actions
+python3 sim/screenshot_fallback.py                # region-map actions when AT-SPI is empty
 ./scripts/nested-seat.sh smoke --config-only       # nested Hyprland config check
 ```
 

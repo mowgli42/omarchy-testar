@@ -1,0 +1,28 @@
+{
+  "id": "contrast-fail",
+  "accessibility": true,
+  "initial": "panel",
+  "states": {
+    "panel": {
+      "widgets": [
+        {
+          "role": "button",
+          "name": "Ok",
+          "objectName": "ok",
+          "enabled": true,
+          "action": "click",
+          "next": "panel"
+        },
+        {
+          "role": "text",
+          "name": "Dim",
+          "color": "#777777",
+          "background": "#888888",
+          "fontPixelSize": 14,
+          "clip": false,
+          "scrollParent": true
+        }
+      ]
+    }
+  }
+}

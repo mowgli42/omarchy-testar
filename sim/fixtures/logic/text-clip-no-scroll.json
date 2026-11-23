@@ -1,0 +1,28 @@
+{
+  "id": "text-clip-no-scroll",
+  "accessibility": true,
+  "initial": "panel",
+  "states": {
+    "panel": {
+      "widgets": [
+        {
+          "role": "button",
+          "name": "Ok",
+          "objectName": "ok",
+          "enabled": true,
+          "action": "click",
+          "next": "panel"
+        },
+        {
+          "role": "text",
+          "name": "Clipped",
+          "color": "#eceff4",
+          "background": "#1a1b1e",
+          "fontPixelSize": 14,
+          "clip": true,
+          "scrollParent": false
+        }
+      ]
+    }
+  }
+}

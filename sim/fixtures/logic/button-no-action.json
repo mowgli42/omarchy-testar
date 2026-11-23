@@ -1,0 +1,25 @@
+{
+  "id": "button-no-action",
+  "accessibility": true,
+  "initial": "panel",
+  "states": {
+    "panel": {
+      "widgets": [
+        {
+          "role": "button",
+          "name": "Dead",
+          "objectName": "dead",
+          "enabled": true
+        },
+        {
+          "role": "button",
+          "name": "Live",
+          "objectName": "live",
+          "enabled": true,
+          "action": "click",
+          "next": "panel"
+        }
+      ]
+    }
+  }
+}

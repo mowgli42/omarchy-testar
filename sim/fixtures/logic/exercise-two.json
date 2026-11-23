@@ -1,0 +1,27 @@
+{
+  "id": "exercise-two",
+  "accessibility": true,
+  "initial": "panel",
+  "states": {
+    "panel": {
+      "widgets": [
+        {
+          "role": "button",
+          "name": "Alpha",
+          "objectName": "alpha",
+          "enabled": true,
+          "action": "click",
+          "next": "panel"
+        },
+        {
+          "role": "button",
+          "name": "Beta",
+          "objectName": "beta",
+          "enabled": true,
+          "action": "click",
+          "next": "panel"
+        }
+      ]
+    }
+  }
+}

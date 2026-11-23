@@ -42,7 +42,7 @@ Feature: Click-all SnarkSentinel accessible buttons
     Then each AT-SPI button is clicked once with a PNG screenshot and a log oracle check
 
   # Future until click-all consumes the logic-audit action map.
-  @future
+  @validated
   Scenario: Button without an action is left unclicked
     When the SnarkSentinel surface has an enabled button with no action and other buttons with actions
     Then the sequence log omits the button that has no action and still clicks the associated buttons

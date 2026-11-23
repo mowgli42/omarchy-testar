@@ -1,0 +1,20 @@
+{
+  "id": "close-wrong-action",
+  "accessibility": true,
+  "initial": "panel",
+  "states": {
+    "panel": {
+      "widgets": [
+        {
+          "role": "button",
+          "name": "Close",
+          "objectName": "close",
+          "enabled": true,
+          "action": "click",
+          "closes": false,
+          "next": "panel"
+        }
+      ]
+    }
+  }
+}
