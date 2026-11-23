@@ -1,0 +1,23 @@
+{
+  "id": "close-disabled",
+  "accessibility": true,
+  "initial": "panel",
+  "states": {
+    "panel": {
+      "widgets": [
+        {
+          "role": "button",
+          "name": "Close",
+          "objectName": "close",
+          "enabled": false,
+          "action": "close",
+          "closes": true,
+          "next": "hidden"
+        }
+      ]
+    },
+    "hidden": {
+      "widgets": []
+    }
+  }
+}

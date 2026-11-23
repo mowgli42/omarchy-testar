@@ -31,3 +31,9 @@ Feature: Scriptless explore on a fixture app
     Given a nested Hyprland seat and a GTK app with an accessibility tree
     When the explorer launches the app
     Then at least one derived action is executed against that tree
+
+  # Future until the walk consumes the logic-audit action map.
+  @validated
+  Scenario: Accessibility gate skips exploration
+    When the accessibility gate has failed
+    Then the sequence log has no actions and the walk result is skipped

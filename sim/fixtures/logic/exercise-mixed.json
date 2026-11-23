@@ -1,0 +1,25 @@
+{
+  "id": "exercise-mixed",
+  "accessibility": true,
+  "initial": "panel",
+  "states": {
+    "panel": {
+      "widgets": [
+        {
+          "role": "button",
+          "name": "Live",
+          "objectName": "live",
+          "enabled": true,
+          "action": "click",
+          "next": "panel"
+        },
+        {
+          "role": "button",
+          "name": "Dead",
+          "objectName": "dead",
+          "enabled": true
+        }
+      ]
+    }
+  }
+}

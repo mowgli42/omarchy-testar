@@ -1,0 +1,10 @@
+{
+  "note": "Labeled regions standing in for template/vision match. Separate state source from AT-SPI.",
+  "image": "status-panel-empty-a11y.svg",
+  "regions": [
+    {"name": "Status", "role": "button", "box": [8, 8, 72, 28]},
+    {"name": "Refresh", "role": "button", "box": [24, 64, 96, 32]},
+    {"name": "Close", "role": "button", "box": [132, 64, 80, 32]},
+    {"name": "Body", "role": "text", "box": [24, 112, 280, 40]}
+  ]
+}

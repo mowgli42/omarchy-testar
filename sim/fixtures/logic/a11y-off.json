@@ -1,0 +1,19 @@
+{
+  "id": "a11y-off",
+  "accessibility": false,
+  "initial": "panel",
+  "states": {
+    "panel": {
+      "widgets": [
+        {
+          "role": "button",
+          "name": "Ok",
+          "objectName": "ok",
+          "enabled": true,
+          "action": "click",
+          "next": "panel"
+        }
+      ]
+    }
+  }
+}

@@ -9,7 +9,7 @@ bd update <id> --claim    # start
 bd close <id>             # done
 ```
 
-Reseed plan (documentation only): `.beads/production-rebuild.graph.json`
+Reseed plans (documentation only): `.beads/production-rebuild.graph.json`, `.beads/two-level-checks.graph.json`
 
 ## Epic
 
@@ -28,7 +28,7 @@ Reseed plan (documentation only): `.beads/production-rebuild.graph.json`
 | `omarchy-testar-6oo` | Accessible.name on SnarkSentinel Panel buttons | closed (snarksentinel PR) |
 | `omarchy-testar-g77` | Live SnarkSentinel click-all | plugin summon + a11y QML |
 | `omarchy-testar-9ze` | Window / journal crash oracle | nested seat |
-| `omarchy-testar-pgx` | Screenshot fallback state source | AT-SPI |
+| `omarchy-testar-pgx` | Screenshot fallback state source | closed (`sim/screenshot_fallback.py`) |
 
 ## Fixture / adoption (can proceed without a live seat)
 
@@ -41,3 +41,21 @@ Reseed plan (documentation only): `.beads/production-rebuild.graph.json`
 | `omarchy-testar-y2z` | Playwright state source for Chromium apps | deferred |
 | `omarchy-testar-8pb` | Cucumber Messages when Gherkin executes | open |
 | `omarchy-testar-5z7` | Open Test Reporting export (deferred; after Cucumber Messages) | open |
+
+## Two-level checks (logic audit, then GUI exercise)
+
+Spec: `openspec/changes/add-two-level-checks/`. Epic `omarchy-testar-ke7`.
+
+| ID | Title | Blocked by |
+|----|-------|------------|
+| `omarchy-testar-bb9` | Logic-audit fixture model | closed |
+| `omarchy-testar-b2p` | Fail enabled buttons that have no action | closed |
+| `omarchy-testar-ecf` | Fail a close control that does not hide the window | closed |
+| `omarchy-testar-bim` | Check text contrast, size, and scroll | closed |
+| `omarchy-testar-elg` | Accessibility gate for GUI exercise | closed |
+| `omarchy-testar-is3` | Logic-audit CTRF, JUnit, and SARIF | closed |
+| `omarchy-testar-cyv` | Click only buttons associated with an action | closed |
+| `omarchy-testar-nka` | Skip GUI exercise when the accessibility gate fails | closed |
+| `omarchy-testar-ac3` | Fail exercise on crash or a close that stays open | closed |
+| `omarchy-testar-4s1` | Exercise CTRF, JUnit, SARIF, and sequence | closed |
+| `omarchy-testar-8tu` | Live seat: skip on an empty tree, else click associated buttons | closed (`--live-gate-smoke`; real nested PNG still Future) |

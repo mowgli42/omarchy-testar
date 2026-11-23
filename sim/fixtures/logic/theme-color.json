@@ -1,0 +1,28 @@
+{
+  "id": "theme-color",
+  "accessibility": true,
+  "initial": "panel",
+  "states": {
+    "panel": {
+      "widgets": [
+        {
+          "role": "button",
+          "name": "Ok",
+          "objectName": "ok",
+          "enabled": true,
+          "action": "click",
+          "next": "panel"
+        },
+        {
+          "role": "text",
+          "name": "Themed",
+          "color": "palette.windowText",
+          "background": "#1a1b1e",
+          "fontPixelSize": 14,
+          "clip": false,
+          "scrollParent": true
+        }
+      ]
+    }
+  }
+}

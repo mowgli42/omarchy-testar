@@ -1,0 +1,27 @@
+{
+  "id": "text-no-size",
+  "accessibility": true,
+  "initial": "panel",
+  "states": {
+    "panel": {
+      "widgets": [
+        {
+          "role": "button",
+          "name": "Ok",
+          "objectName": "ok",
+          "enabled": true,
+          "action": "click",
+          "next": "panel"
+        },
+        {
+          "role": "text",
+          "name": "Default",
+          "color": "#eceff4",
+          "background": "#1a1b1e",
+          "clip": false,
+          "scrollParent": true
+        }
+      ]
+    }
+  }
+}

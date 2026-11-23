@@ -22,11 +22,20 @@ def load_app():
 
 
 def walk(app):
+    from logic_audit import audit  # noqa: WPS433
+
+    audited = audit(app)
+    if not audited["gate_ok"]:
+        return [], "skipped"
     state = app["initial"]
     steps = []
     visited: set[str] = set()
     while len(steps) < SEQ_LEN:
-        widgets = app["states"][state]["widgets"]
+        widgets = [
+            w
+            for w in app["states"][state]["widgets"]
+            if w.get("action") and str(w.get("action")).strip()
+        ]
         widget = pick_unvisited(widgets, visited, roles=BUTTON)
         if widget is None:
             break
@@ -44,7 +53,7 @@ def walk(app):
         state = widget["next"]
         if widget.get("fatal"):
             break
-    return steps
+    return steps, "failed" if any(s["fatal"] for s in steps) else "passed"
 
 
 def write_ctrf(steps):
@@ -113,8 +122,37 @@ def write_sarif(steps):
 
 def main():
     OUT.mkdir(exist_ok=True)
-    steps = walk(load_app())
+    steps, status = walk(load_app())
     (OUT / "sequence.jsonl").write_text("".join(json.dumps(s) + "\n" for s in steps))
+    if status == "skipped":
+        report = {
+            "results": {
+                "tool": {"name": "omarchy-testar", "version": "0.0.1"},
+                "summary": {
+                    "tests": 1,
+                    "passed": 0,
+                    "failed": 0,
+                    "skipped": 1,
+                    "pending": 0,
+                    "other": 0,
+                    "start": 0,
+                    "stop": 1,
+                },
+                "tests": [
+                    {
+                        "name": RUN_NAME,
+                        "status": "skipped",
+                        "duration": 1,
+                        "message": "accessibility gate failed",
+                        "trace": "[]",
+                        "attachments": attachments_for(OUT),
+                    }
+                ],
+            }
+        }
+        (OUT / "ctrf.json").write_text(json.dumps(report, indent=2) + "\n")
+        print(f"skipped walk; wrote {OUT}")
+        return
     report = write_ctrf(steps)
     write_junit(report)
     write_sarif(steps)

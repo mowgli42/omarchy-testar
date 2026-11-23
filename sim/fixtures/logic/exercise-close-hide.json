@@ -1,0 +1,24 @@
+{
+  "id": "exercise-close-hide",
+  "accessibility": true,
+  "initial": "panel",
+  "states": {
+    "panel": {
+      "widgets": [
+        {
+          "role": "button",
+          "name": "Close",
+          "objectName": "close",
+          "enabled": true,
+          "action": "close",
+          "closes": true,
+          "next": "hidden",
+          "panel_visible": false
+        }
+      ]
+    },
+    "hidden": {
+      "widgets": []
+    }
+  }
+}

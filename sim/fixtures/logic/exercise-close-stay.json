@@ -1,0 +1,21 @@
+{
+  "id": "exercise-close-stay",
+  "accessibility": true,
+  "initial": "panel",
+  "states": {
+    "panel": {
+      "widgets": [
+        {
+          "role": "button",
+          "name": "Close",
+          "objectName": "close",
+          "enabled": true,
+          "action": "close",
+          "closes": true,
+          "next": "panel",
+          "panel_visible": true
+        }
+      ]
+    }
+  }
+}
